@@ -77,12 +77,6 @@ def main():
                 a[j][k] -= value * a[i][k]
             b[j] -= value * b[i]
 
-        for x in range(size):
-            for y in range(size):
-                print(f"{round(a[x][y], N_DIGITS)} ", end="")
-            print(f"{round(b[x], N_DIGITS)}")
-        print("")
-
     ans = [0] * size
     for i in range(size - 1, -1, -1):
         ans[i] = b[i]
