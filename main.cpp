@@ -31,10 +31,10 @@ vector<string> split(string str, char sep){
     return ans;
 }
 
-float* str_to_float(vector<string> elems){
+long double* str_to_float(vector<string> elems){
     const string SYMBOLS = "-0123456789.";
     int size = elems.size();
-    float* ans = new float[size];
+    long double* ans = new long double[size];
     for (int k = 0; k < size; k++){
         string str = elems[k];
         for (int i = 0; i < str.length(); i++){
@@ -68,8 +68,8 @@ int main(int argc, char* argv[]){
     }
 
     int size = 0;
-    float** a;
-    float* b;
+    long double** a;
+    long double* b;
     try{
         fstream file(argv[1], ios::in);
         if (!file){
@@ -91,12 +91,12 @@ int main(int argc, char* argv[]){
             }
             if (flag){
                 flag = false;
-                a = new float*[size];
+                a = new long double*[size];
                 for (int i = 0; i < size; i++){
-                    a[i] = new float[size];
+                    a[i] = new long double[size];
                 }
             }
-            float* elems = str_to_float(elems_str);
+            long double* elems = str_to_float(elems_str);
             for (int i = 0; i < size; i++){
                 a[count_lines - 1][i] = elems[i];
             }
@@ -110,20 +110,22 @@ int main(int argc, char* argv[]){
         if (!file){
             return FileError();
         }
-        b = new float[size];
+        b = new long double[size];
         int count_elems = 0;
         int ind = 0;
+        long double* elems;
         while (!file.eof()){
             getline(file, line);
             vector<string> elems_str = split(line, ' ');
-            float* elems = str_to_float(elems_str);
-            count_elems += elems_str.size();
-            for (int i = ind; i < count_elems; i++){
-                b[i] = elems[i];
+            elems = str_to_float(elems_str);
+            int size_array = elems_str.size();
+            for (int i = 0; i < size_array; i++){
+                b[ind + i] = elems[i];
             }
+            count_elems += size_array;
             ind = count_elems;
-            delete [] elems;
         }
+        delete [] elems;
         file.close();
         if (count_elems != size){
             throw;
@@ -138,10 +140,10 @@ int main(int argc, char* argv[]){
             bool flag = true;
             for (int k = i + 1; k < size; k++){
                 if (a[k][i] != 0){
-                    float* temp_arr = a[i];
+                    long double* temp_arr = a[i];
                     a[i] = a[k];
                     a[k] = temp_arr;
-                    float temp = b[i];
+                    long double temp = b[i];
                     b[i] = b[k];
                     b[k] = temp;
                     flag = false;
@@ -165,19 +167,6 @@ int main(int argc, char* argv[]){
             }
             b[j] -= value * b[i];
         }
-//---------------------------------------------------------------
-        for (int i = 0; i < size; i++){
-            for (int j = 0; j < size; j++){
-                cout << a[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
-        for (int i = 0; i < size; i++){
-            cout << b[i] << endl;
-        }
-        cout << endl;
-//---------------------------------------------------------------
     }
 
     float* ans = new float[size];
